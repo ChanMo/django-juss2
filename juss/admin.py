@@ -6,7 +6,7 @@ from django.db import models
 from django.contrib.admin.options import get_ul_class
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import format_lazy
-from mptt.models import TreeForeignKey
+# from mptt.models import TreeForeignKey
 from django.forms.widgets import CheckboxSelectMultiple, SelectMultiple
 from . import widgets
 
@@ -33,7 +33,7 @@ FORMFIELD_FOR_DBFIELD_DEFAULTS = {
     models.ForeignKey: {'widget': widgets.AdminModelChoiceWidget},
     models.BooleanField: {'widget': widgets.AdminBooleanChoiceWidget},
 
-    TreeForeignKey: {'widget': widgets.AdminModelChoiceWidget},
+    # TreeForeignKey: {'widget': widgets.AdminModelChoiceWidget},
 }
 
 
