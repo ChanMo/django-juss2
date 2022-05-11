@@ -1,0 +1,70 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block title %}{% blocktranslate %}Model: {{ name }}{% endblocktranslate %}{% endblock %}
+
+{% block main %}
+  <section class="section">
+    <div class="container">
+      <h1 class="title">{{ name }}</h1>
+      <h2 class="subtitle">{{ summary }}</h2>
+      <nav class="breadcrumb">
+	<ul>
+	  <li><a href="/admin/">首页</a></li>
+	  <li><a href="{% url 'django-admindocs-docroot' %}">文档</a></li>
+	  <li><a href="{% url 'django-admindocs-models-index' %}">模型</a></li>
+	  <li class="is-active"><a href="#" aria-current="page">{{name}}</a></li>
+	</ul>
+      </nav>      
+      <div class="content">
+	{{ description }}
+	<h4>{% translate 'Fields' %}</h4>
+	<div class="module">
+	  <table class="table is-fullwidth is-bordered is-hoverable">
+	    <thead>
+	      <tr>
+		<th>{% translate 'Field' %}</th>
+		<th>{% translate 'Type' %}</th>
+		<th>{% translate 'Description' %}</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      {% for field in fields|dictsort:"name" %}
+		<tr>
+		  <td>{{ field.name }}</td>
+		  <td>{{ field.data_type }}</td>
+		  <td>{{ field.verbose }}{% if field.help_text %} - {{ field.help_text|safe }}{% endif %}</td>
+		</tr>
+	      {% endfor %}
+	    </tbody>
+	  </table>
+	</div>
+
+	{% if methods %}
+	  <h4>{% translate 'Methods with arguments' %}</h4>
+	  <div class="module">
+	    <table class="table is-fullwidth is-bordered is-hoverable">
+	      <thead>
+		<tr>
+		  <th>{% translate 'Method' %}</th>
+		  <th>{% translate 'Arguments' %}</th>
+		  <th>{% translate 'Description' %}</th>
+		</tr>
+	      </thead>
+	      <tbody>
+		{% for method in methods|dictsort:"name" %}
+		  <tr>
+		    <td>{{ method.name }}</td>
+		    <td>{{ method.arguments }}</td>
+		    <td>{{ method.verbose }}</td>
+		  </tr>
+		{% endfor %}
+	      </tbody>
+	    </table>
+	  </div>
+	{% endif %}
+	<p class="is-size-7 mt-3"><a href="{% url 'django-admindocs-models-index' %}">&lsaquo; {% translate 'Back to Model documentation' %}</a></p>
+      </div>
+    </div>
+  </section>
+{% endblock %}

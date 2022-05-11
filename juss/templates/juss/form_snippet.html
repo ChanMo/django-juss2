@@ -1,0 +1,74 @@
+{% if form.non_field_errors %}
+<div class="notification is-danger is-light">
+  {{form.non_field_errors.0}}
+</div>
+{% endif %}
+
+{% for field in form %}
+  <div class="field mb-5">
+    {% with widget=field.field.widget %}
+
+    {% if field.widget_type == "checkboxselectmultiple" %}
+    <label class="label">{{field.label}}</label>
+    {% if field.field.widget.choices %}
+    <div class="tags">
+      {% for radio in field %}
+      <div class="tag is-medium">
+        <label class="checkbox" for="{{radio.id_for_label}}">
+          {{radio.tag}}
+          {{radio.choice_label}}
+        </label>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="block has-text-grey">无可用数据</div>
+    {% endif %}
+
+    {% elif "checkbox" in widget.template_name %}
+    {# 复选框 #}
+    <label class="checkbox">
+      <input type="checkbox" name="{{field.name}}" {% if field.value %}checked{% endif %} />
+      {{field.label}}
+    </label>
+
+
+    {% elif widget.input_type == "select" %}
+    <label class="label" for="{{field.id_for_label}}">{{field.label}}</label>
+    <div class="select">
+      {{field}}
+    </div>
+
+    {% elif field.widget_type == "textarea" %}
+    <label class="label" for="{{field.id_for_label}}">{{field.label}}</label>
+    <textarea class="textarea" name="{{field.name}}">{% if field.value %}{{field.value}}{% endif %}</textarea>
+
+    {% elif widget.input_type == "file" %}
+    {# 文件 #}
+    <label class="label" for="{{field.id_for_label}}">{{field.label}}</label>
+    {% if field.value %}
+    当前: <a href="{{ field.value.url }}">{{field.value}}</a>
+    {% comment %}
+    <a href="{{ field.value.url }}">
+      <figure class="image is-128x128">
+        <img src="{{field.value.url}}" />
+      </figure>
+    </a>
+    {% endcomment %}
+    {% endif %}
+    <input class="input {% if field.errors %}is-danger{% endif %}" type="{{ widget.input_type }}" name="{{ field.name }}" {% if field.value != None %} value="{{ field.value|stringformat:'s' }}"{% endif %} {% include "juss/widgets/attrs.html" %}>
+
+    {% else %}
+    <label class="label" for="{{field.id_for_label}}">{{field.label}}</label>
+    <input class="input {% if field.errors %}is-danger{% endif %}"
+      type="{{ widget.input_type }}" name="{{ field.name }}"{% if field.value != None %} value="{{ field.value|stringformat:'s' }}"{% endif %} {% include "juss/widgets/attrs.html" %}>
+    {% endif %}
+    {% endwith %}
+    {% for error in field.errors %}
+    <p class="help has-text-danger">{{error}}</p>
+    {% endfor %}
+    {% if field.help_text %}
+    <div class="help">{{ field.help_text|safe }}</div>
+    {% endif %}
+  </div>
+{% endfor %}

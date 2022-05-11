@@ -1,0 +1,9 @@
+<div class="select mr-1">
+  <select class="juss-filter-select">
+    {% for choice in choices %}
+      <option {% if choice.selected %} selected="selected"{% endif %} 
+              data-href="{{ choice.query_string|iriencode }}">
+              {% if forloop.counter0 == 0 %}{{title}}{% else %}{{ choice.display }}{% endif %}</option>
+            {% endfor %}
+  </select>
+</div>

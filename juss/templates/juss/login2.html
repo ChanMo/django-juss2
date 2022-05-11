@@ -1,0 +1,82 @@
+{% extends "admin/base.html" %}
+{% load static i18n %}
+
+{% block html_class %}{% endblock %}
+
+{% block extrastyle %}
+  <style>
+   html, body, .columns {
+     height: 100%;
+   }
+   .left-bg {
+     padding: 0;
+     background-image: url({% static 'juss/img/bg.jpg' %});
+     background-size: cover;
+     background-position: center;
+     background-repeat: norepeat;
+   }
+   .login-container {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+   }
+   form {
+     width: 480px;
+     max-width: 100%;
+     padding: 3rem 3rem;
+     margin-bottom: 30vh;
+     background: white;
+     border-radius: 5px;
+   }
+  </style>
+{% endblock %}
+
+{% block app %}
+  <div class="columns m-0" >
+    <div class="column left-bg">
+    </div>
+    <div class="column is-narrow has-background-white login-container" >
+      <form method="post" action="{{app_path}}">
+	{% csrf_token %}
+	<h1 class="title mb-6">{{request.settings.site_title|default:"后台登录"}}</h1>
+	{% if form.non_field_errors %}
+	  <div class="notification is-danger is-light" >
+	    {{form.non_field_errors}}
+	  </div>
+	{% endif %}
+	<div class="field mb-5" >
+	  <div class="control has-icons-left" >
+	    <input name="username" class="input is-medium" type="text" placeholder="请输入用户名" />
+	    <span class="icon is-small is-left" >
+	      <i data-feather="user"></i>
+	    </span>
+	  </div>
+	</div>
+	<div class="field mb-5" >
+	  <div class="control has-icons-left" >
+	    <input name="password" class="input is-medium" type="password" placeholder="请输入密码" />
+	    <span class="icon is-small is-left" >
+	      <i data-feather="lock"></i>
+	    </span>
+	  </div>
+	</div>
+	<div class="field" >
+	  <div class="control" >
+	    <button class="button is-primary is-fullwidth is-medium" type="submit">登 录</button>
+	  </div>
+	</div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extrahead %}
+  <script>
+   window.onload = () => {
+     document.querySelector("form").addEventListener("submit", event => {
+       event.submitter.classList.add("is-loading")
+     })
+
+   }
+  </script>
+{% endblock %}

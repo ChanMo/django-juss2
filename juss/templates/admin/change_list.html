@@ -1,0 +1,70 @@
+{% extends "admin/base.html" %}
+{% load i18n admin_urls static admin_list %}
+
+{% block extrastyle %}
+  {% if cl.formset or action_form %}
+    <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+  {% endif %}
+  {{ media.css }}
+
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+{{ media.js }}
+{% endblock %}
+
+{# 导航 #}
+{% if not is_popup %}
+  {% block breadcrumbs %}
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="{% url 'admin:index' %}">{% trans 'Home' %}</a></li>
+    <li class="is-active"><a href="#" aria-current="page">{{ cl.opts.verbose_name_plural|capfirst }}</a></li>
+  </ul>
+</nav>
+{% endblock %}
+{% endif %}
+
+{% block header_right %}
+  {# 操作按钮 #}
+  {% block object-tools %}
+    <div class="py-2">
+      {% block object-tools-items %}
+        {% change_list_object_tools %}
+      {% endblock %}
+    </div>
+  {% endblock %}
+{% endblock %}
+
+
+{% block content %}
+  <div>
+    <div>
+      {% block search %}{% search_form cl %}{% endblock %}
+      {% block date_hierarchy %}{% if cl.date_hierarchy %}{% date_hierarchy cl %}{% endif %}{% endblock %}
+
+      {# select 筛选 #}
+      {% block filters %}
+        {% if cl.has_filters %}
+          <div class="has-background-light p-2 mb-2">
+            {% for spec in cl.filter_specs %}{% admin_list_filter cl spec %}{% endfor %}
+          </div>
+        {% endif %}
+      {% endblock %}
+
+      <form id="changelist-form" method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        {% if cl.formset %}
+          <div>{{ cl.formset.management_form }}</div>
+        {% endif %}
+
+        {% block result_list %}
+          {% if action_form and cl.show_admin_actions %}{% admin_actions %}{% endif %}
+          {% result_list cl %}
+        {% endblock %}
+        {% block pagination %}{% pagination cl %}{% endblock %}
+      </form>
+    </div>
+  </div>
+{% endblock %}

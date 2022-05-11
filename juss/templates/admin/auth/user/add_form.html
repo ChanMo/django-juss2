@@ -1,0 +1,40 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+
+{% block form_top %}
+  <div class="block has-text-warning-dark" >
+    {% if not is_popup %}
+      <p>{% translate 'First, enter a username and password. Then, you’ll be able to edit more user options.' %}</p>
+    {% else %}
+      <p>{% translate "Enter a username and password." %}</p>
+    {% endif %}
+  </div>
+{% endblock %}
+
+{% block field_sets %}
+  {% for fieldset in adminform %}
+    {% for line in fieldset %}
+      {% for field in line %}
+	<div class="field" >
+	  <label class="label" >{{field.field.label}}</label>
+	  <div class="control" >
+	    {% if field.field.name == "username" %}
+	      <input type="text" class="input {% if field.field.errors %}is-danger{% endif %}" name="username" required />
+	    {% elif field.field.name == "password1" %}
+	      <input type="password" class="input {% if field.field.errors %}is-danger{% endif %}" name="password1" required />
+	    {% elif field.field.name == "password2" %}
+	      <input type="password" class="input {% if field.field.errors %}is-danger{% endif %}" name="password2" required />
+	    {% endif %}
+	  </div>
+	  <div class="help" >{{field.field.help_text}}</div>
+	  {% if field.field.errors %}
+	    <div class="help is-danger">{{field.field.errors}}</div>
+	  {% endif %}
+	</div>
+
+      {% endfor %}
+    {% endfor %}
+  {% endfor %}
+
+
+{% endblock %}

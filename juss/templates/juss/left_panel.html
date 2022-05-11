@@ -1,0 +1,65 @@
+{% load juss_menus %}
+<style>
+ body {
+   height: initial;
+ }
+ .juss-left-menu > div {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 260px;
+   height: 100vh;
+   background: rgb(15 23 42);
+ }
+ .juss-left-menu ul {
+   list-style-type: none !important;
+   margin: 0;
+ }
+ .juss-left-menu a {
+   color: rgba(255,255,255,1);
+   display: block;
+   border-radius: 5px;
+   margin: 0 16px;
+   padding: 12px 16px;
+ }
+ .juss-left-menu a:hover {
+   background: rgba(255,255,255,0.12);
+ }
+ .juss-left-menu .is-toggle > ul {
+   display: none;
+ }
+ .juss-left-menu .is-toggle .feather {
+   transform: rotate(0) !important;
+ }
+ .juss-left-menu .is-active a {
+   background: rgba(255,255,255,0.12);
+ }
+ .juss-left-menu {
+   overflow-y: auto;
+ }
+</style>
+<div style="width:260px;height:100vh;" class="juss-left-menu">
+  <div class="content">
+    <p class="mb-0 has-text-white px-2 pl-5 has-text-weight-bold" style="border-bottom:1px solid rgba(255,255,255,0.2);height:3.5rem;line-height:3.5rem;">{{request.site.setting.site_name|default:"Dashboard"}}</p>
+    <ul class="m-0 py-3" style="height:calc(100vh - 3.5rem);overflow-y:auto;">
+      {% juss_left_menus request.path_info %}
+    </ul>
+  </div>
+</div>
+<script>
+
+ const menus = document.querySelectorAll(".juss-left-menu > div > ul > li > a")
+ menus.forEach(ele => {
+   const li = ele.parentNode
+   if(li.querySelector(".is-active")) {
+     li.classList.remove("is-toggle")
+   }
+   ele.addEventListener("click", () => {
+     if(li.classList.contains("is-toggle")) {
+       li.classList.remove("is-toggle")
+     } else {
+       li.classList.add("is-toggle")
+     }
+   })
+ })
+</script>

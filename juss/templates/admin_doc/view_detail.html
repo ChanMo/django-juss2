@@ -1,0 +1,36 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block title %}{% blocktranslate %}View: {{ name }}{% endblocktranslate %}{% endblock %}
+
+{% block main %}
+  <section class="section">
+    <div class="container">
+      <h1 class="title">{{ name }}</h1>
+      <h2 class="subtitle">{{ summary|striptags }}</h2>
+      <nav class="breadcrumb">
+	<ul>
+	  <li><a href="/admin/">首页</a></li>
+	  <li><a href="{% url 'django-admindocs-docroot' %}">文档</a></li>
+	  <li class="is-active"><a href="{% url 'django-admindocs-views-index' %}" aria-current="page">视图</a></li>
+	  <li class="is-active"><a href="#" aria-current="page">{{name}}</a></li>
+	</ul>
+      </nav>
+      <div class="content">
+	{{ body }}
+
+	{% if meta.Context %}
+	  <h3>{% translate 'Context:' %}</h3>
+	  <p>{{ meta.Context }}</p>
+	{% endif %}
+
+	{% if meta.Templates %}
+	  <h3>{% translate 'Templates:' %}</h3>
+	  <p>{{ meta.Templates }}</p>
+	{% endif %}
+
+	<p class="is-small-7 mt-3"><a href="{% url 'django-admindocs-views-index' %}">&lsaquo; {% translate 'Back to View documentation' %}</a></p>
+      </div>
+    </div>
+  </section>
+{% endblock %}

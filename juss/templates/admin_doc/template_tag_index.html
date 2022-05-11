@@ -1,0 +1,47 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate 'Template tags' %}{% endblock %}
+{% block main %}
+  <section class="section">
+    <div class="container">
+
+      <h1 class="title">{% translate 'Template tag documentation' %}</h1>
+      <nav class="breadcrumb">
+	<ul>
+	  <li><a href="/admin/">首页</a></li>
+	  <li><a href="{% url 'django-admindocs-docroot' %}">文档</a></li>
+	  <li class="is-active"><a href="#" aria-current="page">标签</a></li>
+	</ul>
+      </nav>
+      {% regroup tags|dictsort:"library" by library as tag_libraries %}
+      <div class="content has-background-light p-3">
+	{% for library in tag_libraries %}
+	  <h4>{% firstof library.grouper _("Built-in tags") %}</h4>
+	  <ol>
+	    {% for tag in library.list|dictsort:"name" %}
+              <li><a href="#{{ library.grouper|default:"built_in" }}-{{ tag.name      }}">{{ tag.name }}</a></li>
+	    {% endfor %}
+	  </ol>
+	{% endfor %}
+      </div>
+      <div>
+
+	{% for library in tag_libraries %}
+	  <div class="content">
+	    <h3>#{% firstof library.grouper _("Built-in tags") %}</h3>
+	    {% if library.grouper %}<p class="is-size-7">{% blocktranslate with code="{"|add:"% load "|add:library.grouper|add:" %"|add:"}" %}To use these tags, put <code>{{ code }}</code> in your template before using the tag.{% endblocktranslate %}</p>{% endif %}
+	    {% for tag in library.list|dictsort:"name" %}
+	      <h4 id="{{ library.grouper|default:"built_in" }}-{{ tag.name }}">{{ tag.name }}</h4>
+	      <h5>{{ tag.title|striptags }}</h5>
+	      {{ tag.body }}
+	      {% if not forloop.last %}
+	      {% endif %}
+	    {% endfor %}
+	  </div>
+	  <hr/>
+	{% endfor %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

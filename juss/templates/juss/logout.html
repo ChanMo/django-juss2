@@ -1,0 +1,16 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+{% block nav-global %}{% endblock %}
+{% block app %}
+  <section class="section">
+    <div class="container has-text-centered">
+      <h1 class="title">{% trans "您已退出登录" %}</h1>
+      <div class="buttons is-centered">
+        <a href="/admin/" class="button is-primary">重新登录</a>
+        {% if site_url %}
+        <a href="/" class="button">{% trans "Go Home" %}</a>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

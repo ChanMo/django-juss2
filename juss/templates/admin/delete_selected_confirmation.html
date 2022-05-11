@@ -1,0 +1,55 @@
+{% extends "admin/base.html" %}
+{% load i18n l10n admin_urls static %}
+
+{% block extrahead %}
+  {{media}}
+  <script type="text/javascript" src="{% static 'admin/js/cancel.js' %}"></script>
+{% endblock %}
+
+{% block breadcrumbs %}
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="{% url 'admin:index' %}">{% trans 'Home' %}</a></li>
+    <li><a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a></li>
+    <li class="is-active"><a href="#" aria-current="page">{% trans 'Delete multiple objects' %}</a></li>
+  </ul>
+</nav>
+{% endblock %}
+
+{% block content %}
+  <div class="content">
+  {% if perms_lacking %}
+    <p>{% blocktrans %}Deleting the selected {{ objects_name }} would result in deleting related objects, but your account doesn't have permission to delete the following types of objects:{% endblocktrans %}</p>
+    <ul>
+    {% for obj in perms_lacking %}
+        <li>{{ obj }}</li>
+    {% endfor %}
+    </ul>
+{% elif protected %}
+    <p>{% blocktrans %}Deleting the selected {{ objects_name }} would require deleting the following protected related objects:{% endblocktrans %}</p>
+    <ul>
+    {% for obj in protected %}
+        <li>{{ obj }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>{% blocktrans %}Are you sure you want to delete the selected {{ objects_name }}? All of the following objects and their related items will be deleted:{% endblocktrans %}</p>
+    {% include "admin/includes/object_delete_summary.html" %}
+    <h2>{% trans "Objects" %}</h2>
+    {% for deletable_object in deletable_objects %}
+        <ul>{{ deletable_object|unordered_list }}</ul>
+    {% endfor %}
+    <form method="post">{% csrf_token %}
+    <div>
+    {% for obj in queryset %}
+    <input type="hidden" name="{{ action_checkbox_name }}" value="{{ obj.pk|unlocalize }}">
+    {% endfor %}
+    <input type="hidden" name="action" value="delete_selected">
+    <input type="hidden" name="post" value="yes">
+    <input class="button is-primary" type="submit" value="{% trans 'Yes, I’m sure' %}">
+    <a href="#" class="button cancel-link">{% trans "No, take me back" %}</a>
+    </div>
+    </form>
+{% endif %}
+</div>
+{% endblock %}

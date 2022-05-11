@@ -1,0 +1,33 @@
+{% load i18n %}
+<div class="is-flex is-align-items-center py-2 actions">
+  {% block actions %}
+    {% block actions-form %}
+      <input type="hidden" name="select_across" value="0" class="select-across">
+      <label class="label mr-2">{{ action_form.action.label }}</label>
+        <div class="select">
+          <select name="action" required>
+            {% for option in action_form.action.field.widget.choices %}
+              <option value="{{option.0}}">{{option.1}}</option>
+            {% endfor %}
+          </select>
+        </div>
+    {% endblock %}
+
+    {% block actions-submit %}
+    <button type="submit" class="button mx-2" title="{% trans "Run the selected action" %}" name="index" value="{{ action_index|default:0 }}">{% trans "Go" %}</button>
+  {% endblock %}
+
+  {% block actions-counter %}
+    {% if actions_selection_counter %}
+      <span class="action-counter" data-actions-icnt="{{ cl.result_list|length }}">{{ selection_note }}</span>
+      {% if cl.result_count != cl.result_list|length %}
+        <span class="all">{{ selection_note_all }}</span>
+        <span class="question" style="display:none;">
+          <a href="#" title="{% trans "Click here to select the objects across all pages" %}">{% blocktrans with cl.result_count as total_count %}Select all {{ total_count }} {{ module_name }}{% endblocktrans %}</a>
+        </span>
+        <span class="clear" style="display:none;"><a href="#">{% trans "Clear selection" %}</a></span>
+      {% endif %}
+    {% endif %}
+  {% endblock %}
+{% endblock %}
+</div>

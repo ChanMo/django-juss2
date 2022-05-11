@@ -1,0 +1,61 @@
+{% load i18n static %}
+{% if result_hidden_fields %}
+<div class="hiddenfields">{# DIV for HTML validation #}
+{% for item in result_hidden_fields %}{{ item }}{% endfor %}
+</div>
+{% endif %}
+{% if results %}
+
+<div class="table-container">
+<table class="table is-fullwidth is-hoverable is-bordered mt-2" id="result_list">
+<thead>
+<tr>
+{% for header in result_headers %}
+<th scope="col" {{ header.class_attrib }}>
+
+  <div class="is-align-items-center is-flex">
+   <div class="text">
+     {% if header.sortable %}
+       <a href="{{ header.url_primary }}">{{ header.text|capfirst }}</a>
+     {% else %}
+       <span>{{ header.text|capfirst }}</span>
+     {% endif %}
+   </div>
+
+   {% if header.sortable %}
+     {% if header.sort_priority > 0 %}
+
+       <div class="ml-2 is-flex is-align-items-center">
+         {% if num_sorted_fields > 1 %}
+           <span class="sortpriority mr-2" title="{% blocktrans with priority_number=header.sort_priority %}Sorting priority: {{ priority_number }}{% endblocktrans %}">{{ header.sort_priority }}</span>
+         {% endif %}
+         <a class="is-flex" href="{{ header.url_toggle }}" title="{% trans "Toggle sorting" %}">
+           <i data-feather="chevron-{% if header.ascending %}up{% else %}down{% endif %}" width="18" height="18"></i>
+         </a>
+         <a class="sortremove is-hidden" href="{{ header.url_remove }}" title="{% trans "Remove from sorting" %}">
+           <i data-feather="x" width="18" height="18"></i>
+         </a>
+       </div>
+
+     {% endif %}
+   {% endif %}
+   </div>
+</th>{% endfor %}
+</tr>
+</thead>
+<tbody>
+{% for result in results %}
+{% if result.form and result.form.non_field_errors %}
+    <tr><td colspan="{{ result|length }}">{{ result.form.non_field_errors }}</td></tr>
+{% endif %}
+<tr>{% for item in result %}{{ item }}{% endfor %}</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% else %}
+  <div class="block has-text-centered py-6 has-text-grey">
+    <i data-feather="box"></i><br>
+    EMPTY
+</div>
+{% endif %}

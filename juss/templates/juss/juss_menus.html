@@ -1,0 +1,10 @@
+{% for i in juss_menus_data %}
+<div class="navbar-item has-dropdown is-hoverable">
+  <a class="navbar-link">{{i.label}}</a>
+  <div class="navbar-dropdown">
+    {% for ii in i.children %}
+    <a class="navbar-item" href="{{ii.path}}">{{ii.label}}</a>
+    {% endfor %}
+  </div>
+</div>
+{% endfor %}

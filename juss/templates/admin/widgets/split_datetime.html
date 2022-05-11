@@ -1,0 +1,8 @@
+<div class="datetime is-flex is-align-items-center">
+  <div class="mr-2">
+    {% with widget=widget.subwidgets.0 %}{% include widget.template_name %}{% endwith %}
+  </div>
+  <div>
+    {% with widget=widget.subwidgets.1 %}{% include widget.template_name %}{% endwith %}
+  </div>
+</div>

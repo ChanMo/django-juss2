@@ -1,0 +1,17 @@
+<div class="is-flex is-align-items-center">
+  <div class="max-width:200px">
+    <input type="text" name="{{widget.name}}" required="" id="id_{{widget.name}}" class="input vForeignKeyRawIdAdminField" value="{{widget.value|default:""}}">
+  </div>
+  {% if related_url %}
+    <a href="{{ related_url }}" class="related-lookup mx-2 mt-2" id="lookup_id_{{ widget.name }}" title="{{ link_title }}">
+      <i data-feather="search" width="20" height="20"></i>
+    </a>
+  {% endif %}
+  {% if link_label %}
+    &nbsp;<strong>
+    {% if link_url %}<a href="{{ link_url }}">{% endif %}
+    {{ link_label }}
+    {% if link_url %}</a>{% endif %}
+    </strong>
+  {% endif %}
+</div>

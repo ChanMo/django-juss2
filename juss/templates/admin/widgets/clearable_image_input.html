@@ -1,0 +1,18 @@
+{% if widget.is_initial %}
+  <a href="{{widget.value.url}}" class="mb-2" style="display:inline-block;">
+  <figure class="image" style="display:inline-block;">
+    <img src="{{widget.value.url}}" style="max-height:200px;width:auto;">
+  </figure>
+  </a>
+
+  {% if not widget.required %}
+    <label>
+      <input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}"{% if widget.attrs.disabled %} disabled{% endif %}>
+      删除
+    </label>
+  {% else %}
+    <br>
+  {% endif %}
+  {{ widget.input_text }}:
+{% endif %}
+<input type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>

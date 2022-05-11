@@ -1,0 +1,44 @@
+<fieldset class="module aligned {{ fieldset.classes }}">
+  {% if fieldset.name %}<h2 class="is-hidden">{{ fieldset.name }}</h2>{% endif %}
+  {% if fieldset.description %}
+    <div class="description">{{ fieldset.description|safe }}</div>
+  {% endif %}
+
+  {% for line in fieldset %}
+    <div class="{% if not line.has_visible_field %}is-hidden{% endif %} field field-{{field.name}}">
+      {% for field in line %}
+
+        {% if not line.fields|length_is:'1' and not field.is_readonly %}{{ field.errors }}{% endif %}
+
+        {% if field.is_checkbox %}
+          {# checkbox #}
+          <label class="checkbox">
+            <input type="checkbox" name="{{field.field.name}}" {% if field.field.value %}checked{% endif %}>
+            {{field.field.label}}
+          </label>
+
+        {% else %}
+          <label class="label" for="{{field.field.id_for_label}}">{{field.field.label}}</label>
+          <div class="control">
+            {% if field.is_readonly %}
+              <div class="readonly">{{ field.contents }}</div>
+            {% else %}
+              {{ field.field }}
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {# field errors #}
+        {% for error in field.field.errors %}
+          <p class="help is-danger">{{error}}</p>
+        {% endfor %}
+
+        {# help text #}
+        {% if field.field.help_text %}
+          <p class="help">{{ field.field.help_text|safe }}</p>
+        {% endif %}
+
+      {% endfor %}
+    </div>
+  {% endfor %}
+</fieldset>

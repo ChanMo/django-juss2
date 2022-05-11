@@ -1,0 +1,38 @@
+{% extends "admin/base.html" %}
+{% load i18n admin_urls %}
+
+{% block breadcrumbs %}
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="{% url 'admin:index' %}">{% trans 'Home' %}</a></li>
+    <li><a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a></li>
+    <li><a href="{% url opts|admin_urlname:'change' object.pk|admin_urlquote %}">{{ object|truncatewords:"18" }}</a></li>
+    <li class="is-active"><a href="#" aria-current="page">{% trans 'History' %}</a></li>
+  </ul>
+</nav>
+{% endblock %}
+
+{% block content %}
+{% if action_list %}
+  <table class="table is-fullwidth is-bordered is-hoverable">
+    <thead>
+      <tr>
+        <th scope="col">{% trans 'Date/time' %}</th>
+        <th scope="col">{% trans 'User' %}</th>
+        <th scope="col">{% trans 'Action' %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for action in action_list %}
+        <tr>
+          <th scope="row">{{ action.action_time|date:"DATETIME_FORMAT" }}</th>
+          <td>{{ action.user.get_username }}{% if action.user.get_full_name %} ({{ action.user.get_full_name }}){% endif %}</td>
+          <td>{{ action.get_change_message }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <div class="box">{% trans 'This object doesn’t have a change history. It probably wasn’t added via this admin site.' %}</div>
+{% endif %}
+{% endblock %}

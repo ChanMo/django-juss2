@@ -1,0 +1,30 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Documentation bookmarklets" %}{% endblock %}
+
+{% block main %}
+  <section class="section">
+    <div class="container">
+      <nav class="breadcrumb">
+	<ul>
+	  <li><a href="/admin/">首页</a></li>
+	  <li><a href="{% url 'django-admindocs-docroot' %}">文档</a></li>
+	  <li class="is-active"><a href="#" aria-current="page">书签</a></li>
+	</ul>
+      </nav>      
+      <p class="notification is-info is-light">{% blocktranslate trimmed %}
+	To install bookmarklets, drag the link to your bookmarks toolbar, or right-click
+	the link and add it to your bookmarks. Now you can select the bookmarklet
+	from any page in the site.
+{% endblocktranslate %}
+      </p>
+
+      <div class="content">
+	<h3><a href="javascript:(function(){if(typeof XMLHttpRequest!='undefined'){x=new XMLHttpRequest()}else{return;}x.open('HEAD',location.href,false);x.send(null);try{view=x.getResponseHeader('x-view');}catch(e){alert('No view found for this page');return;}if(view=='undefined'){alert('No view found for this page');}document.location='{% url 'django-admindocs-views-index' %}'+view+'/';})()">{% translate "Documentation for this page" %}</a></h3>
+	<p>{% translate "Jumps you from any page to the documentation for the view that generates that page." %}</p>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

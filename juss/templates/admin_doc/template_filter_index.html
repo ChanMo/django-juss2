@@ -1,0 +1,42 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+{% block title %}{% translate 'Template filters' %}{% endblock %}
+{% block main %}
+  <section class="section">
+    <div class="container">
+      <h1 class="title">{% translate 'Template filter documentation' %}</h1>
+      <nav class="breadcrumb">
+	<ul>
+	  <li><a href="/admin/">首页</a></li>
+	  <li><a href="{% url 'django-admindocs-docroot' %}">文档</a></li>
+	  <li class="is-active"><a href="#" aria-current="page">过滤器</a></li>
+	</ul>
+      </nav>
+      {% regroup filters|dictsort:"library" by library as filter_libraries %}
+      <div class="content has-background-light p-3">
+	{% for library in filter_libraries %}
+	  <h4>{% firstof library.grouper _("Built-in filters") %}</h4>
+	  <ol>
+	    {% for filter in library.list|dictsort:"name" %}
+              <li><a href="#{{ library.grouper|default:"built_in" }}-{{ filter.name   }}">{{ filter.name }}</a></li>
+	    {% endfor %}
+	  </ol>
+	{% endfor %}
+      </div>
+      <div>
+	{% for library in filter_libraries %}
+	  <div class="content">
+	    <h2>#{% firstof library.grouper _("Built-in filters") %}</h2>
+	    {% if library.grouper %}<p class="is-size-7">{% blocktranslate with code="{"|add:"% load "|add:library.grouper|add:" %"|add:"}" %}To use these filters, put <code>{{ code }}</code> in your template before using the filter.{% endblocktranslate %}</p><hr>{% endif %}
+	    {% for filter in library.list|dictsort:"name" %}
+	      <h3 id="{{ library.grouper|default:"built_in" }}-{{ filter.name }}">{{ filter.name }}</h3>
+	      {{ filter.title }}
+	      {{ filter.body }}
+	      {% if not forloop.last %}<hr>{% endif %}
+	    {% endfor %}
+	  </div>
+	{% endfor %}
+      </div>
+    </div>
+  </section>
+{% endblock %}
