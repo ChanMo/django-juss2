@@ -1,0 +1,40 @@
+* Django Juss Admin Theme v2
+
+[[https://github.com/ChanMo/django-juss/][v1]]
+
+使用[[https://bulma.io/documentation/][Bulma.css]]重写Admin模板
+
+
+** Quick Start
+
+*** Install
+
+
+*** Update Settings.py
+
+#+BEGIN_SRC python
+  INSTALLED_APPS = [
+      ...
+      'juss',
+      ...
+  ]
+#+END_SRC
+
+*** [Optional] Custom Left Menus
+
+Edit ~settings.py~
+
+#+BEGIN_SRC python
+JUSS_MENU = [
+    {'label': 'Dashboard', 'path': '/admin/', 'icon':'bar2'},
+    {'label': 'Auth && Permissions', 'children': [
+        {'model': 'auth.user'},
+        {'model': 'auth.group'},
+    ], 'icon': 'users'},
+]
+#+END_SRC
+
+
+** Todo
+
+* [ ] Multiple Color Palette
