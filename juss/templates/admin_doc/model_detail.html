@@ -2,12 +2,16 @@
 {% load i18n %}
 
 {% block title %}{% blocktranslate %}Model: {{ name }}{% endblocktranslate %}{% endblock %}
+{% block extrastyle %}
+  <style>
+  </style>
+{% endblock %}
 
 {% block main %}
   <section class="section">
     <div class="container">
       <h1 class="title">{{ name }}</h1>
-      <h2 class="subtitle">{{ summary }}</h2>
+      <div class="block">{{ summary }}</div>
       <nav class="breadcrumb">
 	<ul>
 	  <li><a href="/admin/">首页</a></li>
@@ -19,7 +23,7 @@
       <div class="content">
 	{{ description }}
 	<h4>{% translate 'Fields' %}</h4>
-	<div class="module">
+	<div class="module mb-5">
 	  <table class="table is-fullwidth is-bordered is-hoverable">
 	    <thead>
 	      <tr>

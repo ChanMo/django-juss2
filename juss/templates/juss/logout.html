@@ -4,11 +4,12 @@
 {% block app %}
   <section class="section">
     <div class="container has-text-centered">
-      <h1 class="title">{% trans "您已退出登录" %}</h1>
+      <h1 class="title">{% trans "Logged out" %}</h1>
+      <p class="block">Thanks for spending some quality time with the web site today.</p>
       <div class="buttons is-centered">
-        <a href="/admin/" class="button is-primary">重新登录</a>
+        <a href="/admin/" class="button is-primary">Log in again</a>
         {% if site_url %}
-        <a href="/" class="button">{% trans "Go Home" %}</a>
+          <!-- <a href="/" class="button">{% trans "Go Home" %}</a> -->
         {% endif %}
       </div>
     </div>

@@ -2,17 +2,14 @@
 {% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %} class="{% block html_class %}has-navbar-fixed-top0{% endblock %}">
   <head>
-    <title>{% block title %}{{request.settings.site_title}}{% endblock %}</title>
+    <title>{% block title %}{{request.site.setting.site_title|default:title}}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'juss/bulma.min.css' %}">
+    <link rel="stylesheet" href="{% static 'juss/app.css' %}">
     {% block extrastyle %}{% endblock %}
-    {% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}">{% endif %}
     {% block extrahead %}{% endblock %}
     {% block responsive %}
       <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
-      <link rel="stylesheet" type="text/css" href="{% static "admin/css/responsive.css" %}">
-      {% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% static "admin/css/responsive_rtl.css" %}">{% endif %}
     {% endblock %}
-    <link rel="stylesheet" type="text/css" href="{% static "juss/app.css" %}">
     {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE">{% endblock %}
   </head>
   {% load i18n %}
@@ -20,7 +17,7 @@
   <body class="{% block body_class %}{% endblock %}">
     {% block app %}
       {# 头部导航 #}
-      <div class="columns is-gapless is-mobile">
+      <div class="columns is-gapless is-mobile mb-0">
 	{% if not is_popup %}
 	  <div class="column is-narrow">
 	    {% include "juss/left_panel.html" %}
@@ -37,11 +34,17 @@
 	      <div class="container">
 		<div class="level">
 		  <div class="level-left is-flex-direction-column is-align-items-flex-start">
-		    <h1 class="title">{{title}}</h1>
-		    {% block breadcrumbs %}{% endblock %}
+		    <div class="level-item">
+		      <div>
+			<h1 class="title mb-2">{{title|truncatechars:40}}</h1>
+			{% block breadcrumbs %}{% endblock %}
+		      </div>
+		    </div>
 		  </div>
 		  <div class="level-right">
-		    {% block header_right %}{% endblock %}
+		    <div class="level-right">
+		      {% block header_right %}{% endblock %}
+		    </div>
 		  </div>
 		</div>
 

@@ -1,15 +1,29 @@
 {% for i in juss_menus_data %}
+  {% if i.children %}
   <li class="is-toggle">
-    <a class="is-flex is-align-items-center is-justify-content-space-between">
-      <span>{{i.label}}</span>
+    <a class="is-flex is-align-items-center">
+      <span class="icon mr-2">
+	<i data-feather="{{i.icon}}" width="18" height="18"></i>
+      </span>
+      <span class="is-flex-grow-1">{{i.label}}</span>
       <i data-feather="chevron-right" width="18" height="18" style="transform:rotate(90deg);transition:all 0.1s"></i>
     </a>
     <ul>
       {% for ii in i.children %}
 	<li {% if ii.active %}class="is-active"{% endif %}>
-	  <a class="pl-4" href="{{ii.path}}">{{ii.label}}</a>
+	  <a class="pl-6" href="{{ii.path}}">{{ii.label}}</a>
 	</li>
       {% endfor %}
     </ul>
   </li>
+  {% else %}
+  <li {% if i.active %}class="is-active"{% endif %}>
+    <a href="{{i.path}}" class="is-flex is-align-items-center">
+      <span class="icon mr-2">
+	<i data-feather="{{i.icon}}" width="18" height="18"></i>
+      </span>
+      <span>{{i.label}}</span>
+    </a>
+  </li>
+  {% endif %}
 {% endfor %}

@@ -39,7 +39,7 @@
     </div>
     <div class="navbar-end">
       {% if site_url %}
-	<a class="navbar-item" href="/">前往首页</a>
+	<!-- <a class="navbar-item" href="/">GO HOME</a> -->
       {% endif %}
       {% comment %}
       <a class="navbar-item {% if 'admin/inbox' in current %}is-active{% endif %}" href="/admin/inbox/">
@@ -56,7 +56,7 @@
       {% if user.is_active and user.is_staff %}
 	{% url 'django-admindocs-docroot' as docsroot %}
 	{% if docsroot %}
-	  <a href="{{ docsroot }}" class="navbar-item">文档</a>
+	  <a href="{{ docsroot }}" class="navbar-item">docs</a>
 	{% endif %}
       {% endif %}
 
@@ -79,9 +79,9 @@
           {% comment %}
           <a class="navbar-item" href="/admin/auth/user/profile/">我的信息</a>
           {% endcomment %}
-          <a class="navbar-item" href="{% url 'admin:password_change' %}">修改密码</a>
+          <a class="navbar-item" href="{% url 'admin:password_change' %}">Change Password</a>
           <hr class="navbar-divider" />
-          <a class="navbar-item" href="/admin/logout/">退出登录</a>
+          <a class="navbar-item" href="{% url 'admin:logout' %}">Logout</a>
         </div>
       </div>
     </div>

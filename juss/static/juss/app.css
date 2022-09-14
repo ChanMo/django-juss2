@@ -219,3 +219,16 @@ a.active.selector-clearall:focus, a.active.selector-clearall:hover {
 .select2-container--admin-autocomplete .select2-results__option--highlighted[aria-selected] {
     background-color: hsl(217, 71%, 45%);
 }
+
+@media print {
+    .navbar {
+	display: none;
+    }
+    .juss-left-menu {
+	display: none;
+    }
+    .level .title {
+	display: none;
+    }
+}
+

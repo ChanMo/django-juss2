@@ -4,6 +4,12 @@
 
 使用[[https://bulma.io/documentation/][Bulma.css]]重写Admin模板
 
+#+CAPTION: Login Page
+[[./login.png]]
+
+#+CAPTION: ChangeList Page
+[[./changelist.png]]
+
 
 ** Quick Start
 
@@ -37,4 +43,5 @@ JUSS_MENU = [
 
 ** Todo
 
-* [ ] Multiple Color Palette
+- [ ] default useful dashboard
+- [ ] dark mode

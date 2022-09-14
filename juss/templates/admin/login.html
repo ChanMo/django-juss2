@@ -1,51 +1,58 @@
 {% extends "admin/base.html" %}
-{% load static i18n %}
+{% load static i18n thumbnail %}
 
 {% block html_class %}{% endblock %}
-{% block nav-global %}{% endblock %}
 
 {% block extrastyle %}
   <style>
-   html, body {
+   html, body, .columns {
      height: 100%;
    }
-   body {
-     background: linear-gradient(30deg, white 45%, transparent 15%, transparent 40%), linear-gradient(150deg, #1e47af 55%, white 45%);
+   .left-bg {
+     padding: 0;
+     {% if request.site.setting.admin_login_bg %}
+     {% thumbnail request.site.setting.admin_login_bg "1200" as im %}
+     background-image: url({{im.url}});
+     {% endthumbnail %}
+     {% else %}
+     background-image: url({% static 'juss/img/bg.jpg' %});
+     {% endif %}
+     background-size: cover;
+     background-position: center;
+     background-repeat: norepeat;
    }
-   .container {
-     max-width: 460px !important;
+   .login-container {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+   }
+   form {
+     width: 480px;
+     max-width: 100%;
+     padding: 3rem 3rem;
+     margin-bottom: 30vh;
      background: white;
-     padding: 3rem;
      border-radius: 5px;
-     box-shadow: 1px 2px 4px lightgrey;
    }
   </style>
 {% endblock %}
 
-{% block main %}
-  <section class="section">
-    <div class="has-text-centered my-6" style="margin-bottom:8vh !important;">
-      {% if request.settings.logo %}
-	<figure class="image is-inline-block">
-          <img src="{{request.settings.logo}}" style="height:100px;" />
-	</figure>
-      {% elif request.settings.site_title %}
-	<h1 class="title has-text-white">{{request.settings.site_title}}</h1>
-      {% else %}
-      {% endif %}
+{% block app %}
+  <div class="columns m-0" >
+    <div class="column left-bg">
     </div>
-    <div class="container">
-      <h1 class="title has-text-centered mb-6" style="letter-spacing:2px;">欢迎回来</h1>
-
-      <form class="login" method="POST" action="{{app_path}}">
+    <div class="column is-narrow has-background-white login-container" >
+      <form method="post" action="{{app_path}}">
 	{% csrf_token %}
+	<h1 class="title mb-6">{{request.site.setting.site_name|default:"JUSS ADMIN"}}</h1>
 	{% if form.non_field_errors %}
-	  <div class="notification is-danger is-light" >{{form.non_field_errors}}</div>
+	  <div class="notification is-danger is-light" >
+	    {{form.non_field_errors}}
+	  </div>
 	{% endif %}
-
 	<div class="field mb-5" >
 	  <div class="control has-icons-left" >
-	    <input name="username" class="input is-medium" type="text" placeholder="请输入用户名" />
+	    <input name="username" class="input is-medium" type="text" placeholder="input your username" />
 	    <span class="icon is-small is-left" >
 	      <i data-feather="user"></i>
 	    </span>
@@ -53,25 +60,20 @@
 	</div>
 	<div class="field mb-5" >
 	  <div class="control has-icons-left" >
-	    <input name="password" class="input is-medium" type="password" placeholder="请输入密码" />
+	    <input name="password" class="input is-medium" type="password" placeholder="input your password" />
 	    <span class="icon is-small is-left" >
 	      <i data-feather="lock"></i>
 	    </span>
 	  </div>
 	</div>
-	{% comment %}
-	<p class="block has-text-right">
-	<a href="/accounts/password_reset/" class="has-text-grey">{% trans "Forgot Password?" %}</a>
-	</p>
-	{% endcomment %}
 	<div class="field" >
 	  <div class="control" >
-	    <button class="button is-primary is-fullwidth is-medium" type="submit">登 录</button>
+	    <button class="button is-primary is-fullwidth is-medium" type="submit">{% translate "Log in" %}</button>
 	  </div>
 	</div>
       </form>
     </div>
-  </section>
+  </div>
 {% endblock %}
 
 {% block extrahead %}

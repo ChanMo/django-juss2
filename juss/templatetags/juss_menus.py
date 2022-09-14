@@ -13,7 +13,8 @@ def check_url(base, url):
 
     if base == '/admin/':
         return re.match('^.*\/admin\/(\?.*)?$', url)
-        # return base == url
+    elif base == '/':
+        return base == url
     elif base:
         return base in url
     else:
@@ -53,59 +54,6 @@ def get_custom_menus(app_list, name, current=None):
                             }
 
 
-@register.inclusion_tag('juss/juss_menus.html', takes_context=True)
-def juss_menus(context, current=None):
-
-    if 'available_apps' not in context:
-        return
-    app_list = context['available_apps']
-    menu = getattr(settings, 'JUSS_MENU', False)
-    new_menu = []
-
-    if menu:
-        for i, item in enumerate(menu):
-            new_menu.append({
-                'label': item['label'],
-                'children': []
-            })
-
-            for link in item['children']:
-
-                if 'model' in link:
-                    model = get_custom_menus(app_list, link['model'], current)
-
-                    if model:
-                        new_menu[-1]['children'].append({
-                            'label': link['label'] if 'label' in link.keys() else model['label'],
-                            'path': model['path'],
-                            'active': model['active']
-                        })
-
-                else:
-                    if link['path'] == '/admin/settings/' and not context['request'].user.has_perm('juss.can_edit_setting'):
-                        pass
-                    else:
-                        new_menu[-1]['children'].append({
-                            'label': link['label'],
-                            'path': link['path'],
-                            'active': check_url(link['path'], current)
-                        })
-
-            if not new_menu[-1]['children']:
-                del new_menu[-1]
-
-    else:
-        for i, item in enumerate(app_list):
-            new_menu.append({
-                'label': item['name'],
-                'children': get_default_menus(app_list, i, current),
-            })
-
-    return {
-        'user': context['request'].user,
-        'juss_menus_data': new_menu,
-        'current': current
-    }
 
 
 @register.inclusion_tag('juss/left_menu.html', takes_context=True)
@@ -119,8 +67,18 @@ def juss_left_menus(context, current=None):
 
     if menu:
         for i, item in enumerate(menu):
+            if 'children' not in item.keys():
+                new_menu.append({
+                    'label': item['label'],
+                    'path': item['path'],
+                    'active': check_url(item['path'], current),
+                    'icon': item['icon']
+                })
+                continue
+            
             new_menu.append({
                 'label': item['label'],
+                'icon': item['icon'],
                 'children': []
             })
 

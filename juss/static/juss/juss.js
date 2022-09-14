@@ -23,7 +23,7 @@ if(fieldsets.length > 1) {
     item.classList.remove("collapse");
     var title = item.querySelector("h2");
     //title.classList.add('is-hidden');
-    title = title ? title.innerHTML : "基础信息";
+    title = title ? title.innerHTML : "Base Info";
     var li = document.createElement("li");
     var a = document.createElement('a');
     a.setAttribute('href', '#tab'+index);
