@@ -1,5 +1,5 @@
 {% extends "admin/base.html" %}
-{% load static i18n thumbnail %}
+{% load static i18n %}
 
 {% block html_class %}{% endblock %}
 
@@ -10,13 +10,7 @@
    }
    .left-bg {
      padding: 0;
-     {% if request.site.setting.admin_login_bg %}
-     {% thumbnail request.site.setting.admin_login_bg "1200" as im %}
-     background-image: url({{im.url}});
-     {% endthumbnail %}
-     {% else %}
      background-image: url({% static 'juss/img/bg.jpg' %});
-     {% endif %}
      background-size: cover;
      background-position: center;
      background-repeat: norepeat;
@@ -44,7 +38,7 @@
     <div class="column is-narrow has-background-white login-container" >
       <form method="post" action="{{app_path}}">
 	{% csrf_token %}
-	<h1 class="title mb-6">{{request.site.setting.site_name|default:"JUSS ADMIN"}}</h1>
+	<h1 class="title mb-6">{{request.settings.site_title|default:"后台登录"}}</h1>
 	{% if form.non_field_errors %}
 	  <div class="notification is-danger is-light" >
 	    {{form.non_field_errors}}
@@ -52,7 +46,7 @@
 	{% endif %}
 	<div class="field mb-5" >
 	  <div class="control has-icons-left" >
-	    <input name="username" class="input is-medium" type="text" placeholder="input your username" />
+	    <input name="username" class="input is-medium" type="text" placeholder="请输入用户名" />
 	    <span class="icon is-small is-left" >
 	      <i data-feather="user"></i>
 	    </span>
@@ -60,7 +54,7 @@
 	</div>
 	<div class="field mb-5" >
 	  <div class="control has-icons-left" >
-	    <input name="password" class="input is-medium" type="password" placeholder="input your password" />
+	    <input name="password" class="input is-medium" type="password" placeholder="请输入密码" />
 	    <span class="icon is-small is-left" >
 	      <i data-feather="lock"></i>
 	    </span>
@@ -68,7 +62,7 @@
 	</div>
 	<div class="field" >
 	  <div class="control" >
-	    <button class="button is-primary is-fullwidth is-medium" type="submit">{% translate "Log in" %}</button>
+	    <button class="button is-primary is-fullwidth is-medium" type="submit">登 录</button>
 	  </div>
 	</div>
       </form>

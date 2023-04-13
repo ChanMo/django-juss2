@@ -1,4 +1,4 @@
-* Django Juss Admin Theme v2
+* Django Juss Admin
 
 [[https://github.com/ChanMo/django-juss/][v1]]
 
@@ -15,33 +15,31 @@
 
 *** Install
 
+#+BEGIN_SRC bash
+  pip install django-juss2
+#+END_SRC
 
 *** Update Settings.py
 
 #+BEGIN_SRC python
   INSTALLED_APPS = [
-      ...
       'juss',
+      'bulma',
       ...
   ]
+  ...
+  FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'  
 #+END_SRC
 
-*** [Optional] Custom Left Menus
+*** Create Basic Menus
 
-Edit ~settings.py~
-
-#+BEGIN_SRC python
-JUSS_MENU = [
-    {'label': 'Dashboard', 'path': '/admin/', 'icon':'bar2'},
-    {'label': 'Auth && Permissions', 'children': [
-        {'model': 'auth.user'},
-        {'model': 'auth.group'},
-    ], 'icon': 'users'},
-]
+#+BEGIN_SRC bash
+  python manage.py create_menus
 #+END_SRC
-
 
 ** Todo
 
+- [x] Menu In Model
+- [ ] Update Filter
 - [ ] default useful dashboard
 - [ ] dark mode

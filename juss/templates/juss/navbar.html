@@ -1,4 +1,4 @@
-{% load juss_menus %}
+{% load i18n juss_menus %}
 <style>
  .navbar-burger {
    margin-left: 0 !important;
@@ -23,9 +23,9 @@
 
   {% comment %}
   <div class="navbar-brand">
-  <a class="navbar-item subtitle" href="/admin/">
-  {{request.site.setting.site_name|default:'Admin'}}
-  </a>
+    <a class="navbar-item subtitle" href="/admin/">
+      {{request.site.setting.site_name|default:'Admin'}}
+    </a>
   </div>
   {% endcomment %}
   <div id="navbarMenuHeroA" class="navbar-menu">
@@ -39,49 +39,35 @@
     </div>
     <div class="navbar-end">
       {% if site_url %}
-	<!-- <a class="navbar-item" href="/">GO HOME</a> -->
+      <a class="navbar-item" href="/">{% translate "Go Home" %}</a>
       {% endif %}
-      {% comment %}
-      <a class="navbar-item {% if 'admin/inbox' in current %}is-active{% endif %}" href="/admin/inbox/">
-      <span class="icon is-small">
-      {% with count=user.get_unread_msg_count %}
-      {% if count %}
-      <i class="badge tag is-rounded is-danger">{{count}}</i>
-      {% endif %}
-      {% endwith %}
-      <i data-feather="bell"></i>
-      </span>
-      </a>
-      {% endcomment %}
       {% if user.is_active and user.is_staff %}
-	{% url 'django-admindocs-docroot' as docsroot %}
-	{% if docsroot %}
-	  <a href="{{ docsroot }}" class="navbar-item">docs</a>
-	{% endif %}
+        {% url 'django-admindocs-docroot' as docsroot %}
+        {% if docsroot %}
+        <a href="{{ docsroot }}" class="navbar-item">{% translate "Document" %}</a>
+        {% endif %}
       {% endif %}
+
 
       <div class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link">
           {% if enable_avatar %}
-            <figure class="image is-32x32 mr-1">
-              {% if user.avatar %}
-		<img class="is-rounded" src="{{user.avatar}}" style="max-height:initial;" />
-              {% else %}
-		<svg width="32" height="32" data-jdenticon-value="{{user.username}}"></svg>
-              {% endif %}
-            </figure>
-            <span>{{user.username}}</span>
+          <figure class="image is-32x32 mr-1">
+            {% if user.avatar %}
+            <img class="is-rounded" src="{{user.avatar}}" style="max-height:initial;" />
+            {% else %}
+            <svg width="32" height="32" data-jdenticon-value="{{user.username}}"></svg>
+            {% endif %}
+          </figure>
+          <span>{{user.username}}</span>
           {% else %}
-            {{user.username}}
+          {{user.username}}
           {% endif %}
         </a>
         <div class="navbar-dropdown is-right">
-          {% comment %}
-          <a class="navbar-item" href="/admin/auth/user/profile/">我的信息</a>
-          {% endcomment %}
-          <a class="navbar-item" href="{% url 'admin:password_change' %}">Change Password</a>
+          <a class="navbar-item" href="{% url 'admin:password_change' %}">{% translate "Change Password" %}</a>
           <hr class="navbar-divider" />
-          <a class="navbar-item" href="{% url 'admin:logout' %}">Logout</a>
+          <a class="navbar-item" href="/admin/logout/">{% translate "Logout" %}</a>
         </div>
       </div>
     </div>
